@@ -23,6 +23,14 @@ a {
   background-color: #1b6ec2;
   border-color: #1861ac;
 }
+.land{
+    padding-top: 15%;
+    height: 650px;
+    background-color:transparent;
+}
+.section-bg{
+    background-color:white;
+}
 
 /* Sticky footer styles
 -------------------------------------------------- */
@@ -54,13 +62,15 @@ button.accept-policy {
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
+    background-image: url("/Images/bg.jpg");
 }
 
 body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+    color:yellowgreen;
 }
 .footer {
   position: absolute;
