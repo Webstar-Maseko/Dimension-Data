@@ -23,7 +23,16 @@ namespace Dimension_Data.Controllers
         public async Task<IActionResult> Index()
         {
             String query = "Select TOP (10) * from EmployeeData";
-            return View(await _context.EmployeeData.ToListAsync());
+            //return View(await _context.EmployeeData.ToListAsync());
+            //IEnumerable<EmployeeData> data = _context.Database.ExecuteSqlCommand(query);
+            return View(await _context.EmployeeData.FromSqlRaw(query).ToListAsync());
+        }
+        //GET: Employee by empNumber
+        [HttpPost]
+        public async Task<IActionResult> index( int id)
+        {
+            String query = $"Select * from EmployeeData where EmployeeNumber = {id}";
+            return View(await _context.EmployeeData.FromSqlRaw(query).ToListAsync());
         }
 
         // GET: Employee/Details/5
