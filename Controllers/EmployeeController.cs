@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Dimension_Data.Data;
 using Dimension_Data.Models;
+using Microsoft.EntityFrameworkCore.Storage;
+using NuGet.Frameworks;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Dimension_Data.Controllers
 {
@@ -18,19 +21,28 @@ namespace Dimension_Data.Controllers
         {
             _context = context;
         }
+        public void viewData()
+        {
+            ViewBag.depart = (from depar in _context.EmployeeData select depar.Department).Distinct().Count();
+            ViewBag.count = _context.EmployeeData.Count();
+            ViewBag.salar = (from salar in _context.EmployeeData select salar.MonthlyIncome).Sum().ToString("c");
+            ViewBag.satisfa = (from satis in _context.EmployeeData select satis.EnvironmentSatisfaction).Average().ToString("P");
+        }
 
         // GET: Employee
         public async Task<IActionResult> Index()
         {
-            String query = "Select TOP (10) * from EmployeeData";
-            //return View(await _context.EmployeeData.ToListAsync());
-            //IEnumerable<EmployeeData> data = _context.Database.ExecuteSqlCommand(query);
+          
+            viewData();
+            String query = "Select TOP(5) * from EmployeeData ORDER BY EmployeeNumber DESC";
+           
             return View(await _context.EmployeeData.FromSqlRaw(query).ToListAsync());
         }
         //GET: Employee by empNumber
         [HttpPost]
         public async Task<IActionResult> index( int id)
         {
+            viewData();
             String query = $"Select * from EmployeeData where EmployeeNumber = {id}";
             return View(await _context.EmployeeData.FromSqlRaw(query).ToListAsync());
         }

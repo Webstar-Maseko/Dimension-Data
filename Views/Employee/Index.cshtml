@@ -2,19 +2,21 @@
 
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Dashboard";
+    
 }
 
 
-<h1>Index</h1>
+<h1>Dashboard</h1>
 
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Add New</a>
 </p>
-<form asp-action="index" class="form-inline " >
-    <div class="form-group ">
-        <input class="form-control mr-sm-2" name="id"  placeholder="Employee Number" />
+
+<form asp-action="index" class="form-inline pb-3 "  >
+    <div class="form-group  ml-auto text-right" >
+        <input class="form-control " name="id"  placeholder="Employee Number" />
         <button type="submit" class="btn btn-success">Find</button>
     </div>
 
@@ -94,4 +96,89 @@
         </tbody>
     </table>
 
+</div>
+<h3 class="text-center pt-4 pb-4">Summary</h3>
+<div class="row">
+    <div class="col-md-3">
+        <div class="card bg-dark ">
+            <div class="card-header bg-light">
+                <h4>Total Employees </h4>
+            </div>
+            <div class="card-body text-center text-light">
+                <span class="card-title pb-5"><i class="fa fa-users fa-3x" aria-hidden="true"></i></span>
+                <h3 class="card-text">@ViewBag.count</h3>
+            </div>
+
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-dark ">
+            <div class="card-header bg-light">
+                <h4>Number of departments </h4>
+            </div>
+            <div class="card-body text-center text-light">
+                <span class="card-title pb-5"><i class="fa fa-building fa-3x" aria-hidden="true"></i></span>
+                <h3 class="card-text">@ViewBag.depart</h3>
+            </div>
+
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-dark ">
+            <div class="card-header bg-light">
+                <h4>Total Salary </h4>
+            </div>
+            <div class="card-body text-center text-light">
+                <span class="card-title pb-5"><i class="fa fa-money fa-3x" aria-hidden="true"></i></span>
+                <h3 class="card-text">@ViewBag.salar</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-dark ">
+            <div class="card-header bg-light">
+                <h5>Environment Satisfaction</h5>
+            </div>
+            <div class="card-body text-center text-light">
+                <span class="card-title pb-5"><i class="fa fa-smile-o fa-3x" aria-hidden="true"></i></span>
+                <h3 class="card-text">@ViewBag.satisfa</h3>
+            </div>
+        </div>
+    </div>
+</div>
+<h4 class="text-center pt-4 pb-4">Employees per department</h4>
+<div class="row">
+    <div class="col-md-4">
+        <div class="card bg-dark ">
+            <div class="card-header bg-light">
+                <h5>Sales</h5>
+            </div>
+            <div class="card-body text-center text-light">
+                <span class="card-title pb-5"><i class="fa fa-shopping-cart fa-3x" aria-hidden="true"></i></span>
+                <h3 class="card-text">@ViewBag.satisfa</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card bg-dark ">
+            <div class="card-header bg-light">
+                <h5>Research & Development</h5>
+            </div>
+            <div class="card-body text-center text-light">
+                <span class="card-title pb-5"><i class="fa fa-search-plus fa-3x" aria-hidden="true"></i></span>
+                <h3 class="card-text">@ViewBag.satisfa</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card bg-dark ">
+            <div class="card-header bg-light">
+                <h5>Human Resource</h5>
+            </div>
+            <div class="card-body text-center text-light">
+                <span class="card-title pb-5"><i class="fa fa-connectdevelop fa-3x" aria-hidden="true"></i></span>
+                <h3 class="card-text">@ViewBag.satisfa</h3>
+            </div>
+        </div>
+    </div>
 </div>
