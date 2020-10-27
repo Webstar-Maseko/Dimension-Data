@@ -25,8 +25,14 @@ namespace Dimension_Data.Controllers
         {
             ViewBag.depart = (from depar in _context.EmployeeData select depar.Department).Distinct().Count();
             ViewBag.count = _context.EmployeeData.Count();
+            double total = (double)ViewBag.count * 5;
             ViewBag.salar = (from salar in _context.EmployeeData select salar.MonthlyIncome).Sum().ToString("c");
-            ViewBag.satisfa = (from satis in _context.EmployeeData select satis.EnvironmentSatisfaction).Average().ToString("P");
+            ViewBag.satisfa = ((from satis in _context.EmployeeData select satis.EnvironmentSatisfaction).Sum() /total).ToString("P");
+            ViewBag.sales = (from sales in _context.EmployeeData where sales.Department == "sales" select sales ).Count();
+            ViewBag.hr = (from hr in _context.EmployeeData where hr.Department == "Human Resources" select hr).Count();
+            ViewBag.rd = (from rd in _context.EmployeeData where rd.Department == "Research & Development" select rd).Count();
+            ViewBag.male = (from male in _context.EmployeeData where male.Gender == "Male" select male).Count();
+            ViewBag.female = (from female in _context.EmployeeData where female.Gender == "Female" select female).Count();
         }
 
         // GET: Employee
