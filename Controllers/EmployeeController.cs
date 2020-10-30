@@ -40,7 +40,7 @@ namespace Dimension_Data.Controllers
         {
           
             viewData();
-            String query = "Select TOP(5) * from EmployeeData ORDER BY EmployeeNumber DESC";
+            String query = "Select TOP(5) * FROM EmployeeData ORDER BY EmployeeNumber DESC";
            
             return View(await _context.EmployeeData.FromSqlRaw(query).ToListAsync());
         }
