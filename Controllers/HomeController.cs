@@ -20,7 +20,7 @@ namespace Dimension_Data.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return LocalRedirect("/Identity/Account/Login") ;
         }
 
         public IActionResult Privacy()

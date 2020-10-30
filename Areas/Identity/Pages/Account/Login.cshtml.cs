@@ -83,7 +83,7 @@ namespace Dimension_Data.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
-                    return LocalRedirect(returnUrl);
+                    return LocalRedirect("/Employee/");
                 }
                 if (result.RequiresTwoFactor)
                 {

@@ -31,14 +31,23 @@ namespace Dimension_Data
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
             services.AddDbContext<DimensionContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddRazorPages();
+            services.AddAuthorization(options => {
+                options.AddPolicy("readpolicy",
+                    builder => builder.RequireRole("Admin", "Manager", "Employee"));
+                options.AddPolicy("writepolicy",
+                    builder => builder.RequireRole("Admin", "Manager"));
+            });
+
         }
+       
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider service)
         {
             if (env.IsDevelopment())
             {
@@ -51,6 +60,7 @@ namespace Dimension_Data
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
@@ -66,6 +76,7 @@ namespace Dimension_Data
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
+           
         }
     }
 }

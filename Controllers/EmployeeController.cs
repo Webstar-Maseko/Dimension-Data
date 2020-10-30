@@ -10,6 +10,8 @@ using Dimension_Data.Models;
 using Microsoft.EntityFrameworkCore.Storage;
 using NuGet.Frameworks;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace Dimension_Data.Controllers
 {
@@ -36,6 +38,7 @@ namespace Dimension_Data.Controllers
         }
 
         // GET: Employee
+        [Authorize(Policy ="readpolicy")]
         public async Task<IActionResult> Index()
         {
           
@@ -46,6 +49,7 @@ namespace Dimension_Data.Controllers
         }
         //GET: Employee by empNumber
         [HttpPost]
+        [Authorize(Policy = "readpolicy")]
         public async Task<IActionResult> index( int id)
         {
             viewData();
@@ -54,6 +58,8 @@ namespace Dimension_Data.Controllers
         }
 
         // GET: Employee/Details/5
+        [Authorize]
+        [Authorize(Policy = "readpolicy")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -72,6 +78,8 @@ namespace Dimension_Data.Controllers
         }
 
         // GET: Employee/Create
+        [Authorize]
+        [Authorize(Policy = "writepolicy")]
         public IActionResult Create()
         {
             return View();
@@ -82,6 +90,7 @@ namespace Dimension_Data.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "writepolicy")]
         public async Task<IActionResult> Create([Bind("Age,Attrition,BusinessTravel,DailyRate,Department,DistanceFromHome,Education,EducationField,EmployeeCount,EmployeeNumber,EnvironmentSatisfaction,Gender,HourlyRate,JobInvolvement,JobLevel,JobRole,JobSatisfaction,MaritalStatus,MonthlyIncome,MonthlyRate,NumCompaniesWorked,Over18,OverTime,PercentSalaryHike,PerformanceRating,RelationshipSatisfaction,StandardHours,StockOptionLevel,TotalWorkingYears,TrainingTimesLastYear,WorkLifeBalance,YearsAtCompany,YearsInCurrentRole,YearsSinceLastPromotion,YearsWithCurrManager")] EmployeeData employeeData)
         {
             if (ModelState.IsValid)
@@ -94,6 +103,8 @@ namespace Dimension_Data.Controllers
         }
 
         // GET: Employee/Edit/5
+        [Authorize]
+        [Authorize(Policy = "writepolicy")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -114,6 +125,7 @@ namespace Dimension_Data.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "writepolicy")]
         public async Task<IActionResult> Edit(int id, [Bind("Age,Attrition,BusinessTravel,DailyRate,Department,DistanceFromHome,Education,EducationField,EmployeeCount,EmployeeNumber,EnvironmentSatisfaction,Gender,HourlyRate,JobInvolvement,JobLevel,JobRole,JobSatisfaction,MaritalStatus,MonthlyIncome,MonthlyRate,NumCompaniesWorked,Over18,OverTime,PercentSalaryHike,PerformanceRating,RelationshipSatisfaction,StandardHours,StockOptionLevel,TotalWorkingYears,TrainingTimesLastYear,WorkLifeBalance,YearsAtCompany,YearsInCurrentRole,YearsSinceLastPromotion,YearsWithCurrManager")] EmployeeData employeeData)
         {
             if (id != employeeData.EmployeeNumber)
@@ -145,6 +157,8 @@ namespace Dimension_Data.Controllers
         }
 
         // GET: Employee/Delete/5
+        [Authorize(Policy = "writepolicy")]
+
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
