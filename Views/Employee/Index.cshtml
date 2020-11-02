@@ -1,8 +1,9 @@
 ﻿@model IEnumerable<Dimension_Data.Models.EmployeeData>
 
+
 @{
     ViewData["Title"] = "Dashboard";
-
+    
 }
 
 
@@ -13,9 +14,9 @@
     <a asp-action="Create">Add New Employee</a>
 </p>
 
-<form asp-action="index" class="form-inline pb-3 ">
-    <div class="form-group  ml-auto text-right">
-        <input class="form-control " name="id" placeholder="Employee Number" />
+<form asp-action="index" class="form-inline pb-3 "  >
+    <div class="form-group  ml-auto text-right" >
+        <input class="form-control " name="id"  placeholder="Employee Number" />
         <button type="submit" class="btn btn-success">Find</button>
     </div>
 
