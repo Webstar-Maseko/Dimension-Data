@@ -6,21 +6,35 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Dimension_Data.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Components;
 
 namespace Dimension_Data.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private readonly  SignInManager<IdentityUser>_signInManager;
+       //private readonly UserManager<IdentityUser> _userManager;
+        public HomeController(ILogger<HomeController> logger, UserManager<IdentityUser> user, SignInManager<IdentityUser> signIn)
         {
             _logger = logger;
+            _signInManager = signIn;
+           // _userManager = user;
         }
-
+        
         public IActionResult Index()
         {
-            return LocalRedirect("/Identity/Account/Login") ;
+            if (_signInManager.IsSignedIn(User))
+            {
+                
+                return LocalRedirect("/Employee/");
+            }
+            else
+            {
+                return LocalRedirect("/Identity/Account/Login");
+            }
+            
         }
 
         public IActionResult Privacy()

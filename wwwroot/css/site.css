@@ -21,6 +21,10 @@ a {
 .inp{
     border: 0 0 2px;
 }
+.pd-top{
+    padding-top:18%;
+    
+}
 
 .btn-primary {
   color: #fff;

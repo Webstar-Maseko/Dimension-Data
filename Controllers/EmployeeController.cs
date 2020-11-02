@@ -47,6 +47,7 @@ namespace Dimension_Data.Controllers
            
             return View(await _context.EmployeeData.FromSqlRaw(query).ToListAsync());
         }
+      
         //GET: Employee by empNumber
         [HttpPost]
         [Authorize(Policy = "readpolicy")]
