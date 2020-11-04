@@ -1,17 +1,12 @@
-﻿using System;
+﻿using Dimension_Data.Data;
+using Dimension_Data.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using Dimension_Data.Data;
-using Dimension_Data.Models;
-using Microsoft.EntityFrameworkCore.Storage;
-using NuGet.Frameworks;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 
 namespace Dimension_Data.Controllers
 {
@@ -29,8 +24,8 @@ namespace Dimension_Data.Controllers
             ViewBag.count = _context.EmployeeData.Count();
             double total = (double)ViewBag.count * 5;
             ViewBag.salar = (from salar in _context.EmployeeData select salar.MonthlyIncome).Sum().ToString("c");
-            ViewBag.satisfa = ((from satis in _context.EmployeeData select satis.EnvironmentSatisfaction).Sum() /total).ToString("P");
-            ViewBag.sales = (from sales in _context.EmployeeData where sales.Department == "sales" select sales ).Count();
+            ViewBag.satisfa = ((from satis in _context.EmployeeData select satis.EnvironmentSatisfaction).Sum() / total).ToString("P");
+            ViewBag.sales = (from sales in _context.EmployeeData where sales.Department == "sales" select sales).Count();
             ViewBag.hr = (from hr in _context.EmployeeData where hr.Department == "Human Resources" select hr).Count();
             ViewBag.rd = (from rd in _context.EmployeeData where rd.Department == "Research & Development" select rd).Count();
             ViewBag.male = (from male in _context.EmployeeData where male.Gender == "Male" select male).Count();
@@ -38,20 +33,20 @@ namespace Dimension_Data.Controllers
         }
 
         // GET: Employee
-        [Authorize(Policy ="readpolicy")]
+        [Authorize(Policy = "readpolicy")]
         public async Task<IActionResult> Index()
         {
-          
+
             viewData();
             String query = "Select TOP(5) * FROM EmployeeData ORDER BY EmployeeNumber DESC";
-           
+
             return View(await _context.EmployeeData.FromSqlRaw(query).ToListAsync());
         }
-      
+
         //GET: Employee by empNumber
         [HttpPost]
         [Authorize(Policy = "readpolicy")]
-        public async Task<IActionResult> index( int id)
+        public async Task<IActionResult> index(int id)
         {
             viewData();
             String query = $"Select * from EmployeeData where EmployeeNumber = {id}";

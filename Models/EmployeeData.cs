@@ -6,10 +6,9 @@ namespace Dimension_Data.Models
 {
     public partial class EmployeeData
     {
-       
         public int Age { get; set; }
         public string Attrition { get; set; }
-         [Display(Name = "Business Travel")]
+        [Display(Name = "Business Travel")]
         public string BusinessTravel { get; set; }
         [Display(Name = "Daily rate")]
         public int DailyRate { get; set; }
@@ -40,7 +39,7 @@ namespace Dimension_Data.Models
         public string MaritalStatus { get; set; }
         [Display(Name = "Monthly income")]
         [DataType(DataType.Currency)]
-        
+
         public decimal MonthlyIncome { get; set; }
         [Display(Name = "Monthly rate")]
         [DataType(DataType.Currency)]
@@ -74,7 +73,10 @@ namespace Dimension_Data.Models
         [Display(Name = "Years since last promotion")]
         public int YearsSinceLastPromotion { get; set; }
         [Display(Name = "Years with current manager")]
-        
+
         public int YearsWithCurrManager { get; set; }
+        public string UserId { get; set; }
+
+        public virtual AspNetUsers User { get; set; }
     }
 }
