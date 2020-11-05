@@ -75,7 +75,7 @@ namespace Dimension_Data.Models
         [Display(Name = "Years with current manager")]
 
         public int YearsWithCurrManager { get; set; }
-        public string UserId { get; set; }
+        public string UserID { get; set; }
 
         public virtual AspNetUsers User { get; set; }
     }

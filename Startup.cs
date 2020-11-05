@@ -12,6 +12,9 @@ using Dimension_Data.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Dimension_Data.Services;
+using Dimension_Data.Models;
 
 namespace Dimension_Data
 {
@@ -41,7 +44,10 @@ namespace Dimension_Data
                     builder => builder.RequireRole("Admin", "Manager", "Employee"));
                 options.AddPolicy("writepolicy",
                     builder => builder.RequireRole("Admin", "Manager"));
+                
             });
+            services.AddTransient<IEmailSender,EmailSender>();
+            services.Configure<AuthMessageSenderOpt>(Configuration);
 
         }
        

@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -96,7 +97,7 @@ namespace Dimension_Data.Areas.Identity.Pages.Account
         {
             returnUrl = returnUrl ?? Url.Content("~/");
             var role = _roleManager.FindByNameAsync(Input.Name).Result;
-            var userExist = _context.EmployeeData.FromSqlRaw($"Select EmployeeNumber where EmployeeNumber = {Input.empNum}");
+            var userExist = (from emp in _context.EmployeeData where emp.EmployeeNumber == Input.empNum select emp).FirstOrDefault();
        
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
@@ -112,17 +113,14 @@ namespace Dimension_Data.Areas.Identity.Pages.Account
 
                             _logger.LogInformation("User created a new account with password.");
                             await _userManager.AddToRoleAsync(user, role.Name);
-                            EmployeeData userID = (from userReg in _context.EmployeeData where userReg.EmployeeNumber == Input.empNum select userReg).SingleOrDefault();
-                            userID.UserId = user.Id;
-                            _context.SaveChanges();
-                            
+                           
 
                             var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                             code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                             var callbackUrl = Url.Page(
                                 "/Account/ConfirmEmail",
                                 pageHandler: null,
-                                values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
+                                values: new { area = "Identity", userId = user.Id, code = code, empNum = Input.empNum, returnUrl = returnUrl },
                                 protocol: Request.Scheme);
 
                             await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
@@ -130,7 +128,7 @@ namespace Dimension_Data.Areas.Identity.Pages.Account
 
                             if (_userManager.Options.SignIn.RequireConfirmedAccount)
                             {
-                                return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+                                return RedirectToPage("RegisterConfirmation", new { email = Input.Email, empNum = Input.empNum, returnUrl = returnUrl });
                             }
                             else
                             {
@@ -145,13 +143,13 @@ namespace Dimension_Data.Areas.Identity.Pages.Account
                     }
                     else
                     {
-                        ModelState.AddModelError(String.Empty, "An account with this employeee number already exist");
+                        ModelState.AddModelError(string.Empty, "An account with this employeee number already exist");
                     }
                    
                 }
                 else
                 {
-                    ModelState.AddModelError(String.Empty, "There's no employee with the specified employee number please contact your admin for assistance");
+                    ModelState.AddModelError(string.Empty, "There's no employee with the specified employee number please contact your admin for assistance");
                 }
                 
                

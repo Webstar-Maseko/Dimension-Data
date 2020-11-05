@@ -26,8 +26,8 @@ namespace Dimension_Data.Areas.Identity.Pages.Account
         public bool DisplayConfirmAccountLink { get; set; }
 
         public string EmailConfirmationUrl { get; set; }
-
-        public async Task<IActionResult> OnGetAsync(string email, string returnUrl = null)
+   
+        public async Task<IActionResult> OnGetAsync(string email,int empNum, string returnUrl = null)
         {
             if (email == null)
             {
@@ -42,7 +42,7 @@ namespace Dimension_Data.Areas.Identity.Pages.Account
 
             Email = email;
             // Once you add a real email sender, you should remove this code that lets you confirm the account
-            DisplayConfirmAccountLink = true;
+            DisplayConfirmAccountLink = false;
             if (DisplayConfirmAccountLink)
             {
                 var userId = await _userManager.GetUserIdAsync(user);
@@ -51,7 +51,7 @@ namespace Dimension_Data.Areas.Identity.Pages.Account
                 EmailConfirmationUrl = Url.Page(
                     "/Account/ConfirmEmail",
                     pageHandler: null,
-                    values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
+                    values: new { area = "Identity", userId = userId, code = code, empNum = empNum,  returnUrl = returnUrl },
                     protocol: Request.Scheme);
             }
 

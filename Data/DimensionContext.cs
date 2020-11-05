@@ -29,7 +29,7 @@ namespace Dimension_Data.Data
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+                #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
                 optionsBuilder.UseSqlServer("Initial Catalog=Dimension;Data Source=(LocalDB)\\MSSQLLocalDB;Trusted_Connection=True");
             }
         }
@@ -182,13 +182,13 @@ namespace Dimension_Data.Data
                     .IsRequired()
                     .HasMaxLength(3);
 
-                entity.Property(e => e.UserId)
+                entity.Property(e => e.UserID)
                     .HasColumnName("UserID")
                     .HasMaxLength(450);
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.EmployeeData)
-                    .HasForeignKey(d => d.UserId)
+                    .HasForeignKey(d => d.UserID)
                     .HasConstraintName("FK_EmployeeData_AspNetUsers");
             });
 
