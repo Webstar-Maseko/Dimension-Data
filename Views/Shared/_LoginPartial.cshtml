@@ -4,7 +4,10 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
-    <div class="dropdown navbar-nav">
+    <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+        <button type="submit" class=" btn btn-danger">Logout</button>
+    </form>
+    @*<div class="dropdown navbar-nav">
         <a class="btn btn-outline-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Acount
         </a>
@@ -12,11 +15,9 @@
 
             <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Profile</a>
 
-            <form class="form-inline dropdown-item" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                <button type="submit" class=" btn btn-link text-danger">Logout</button>
-            </form>
 
-       
+
+
         </div>
-    </div>
+    </div>*@
 }

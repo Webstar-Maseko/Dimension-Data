@@ -2,6 +2,11 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Dimension_Data.Models;
+using Microsoft.AspNetCore.Connections;
+using Microsoft.Data.SqlClient;
+using System.Data;
+using Microsoft.AspNetCore.Identity;
+using System.Linq;
 
 namespace Dimension_Data.Data
 {
@@ -10,10 +15,11 @@ namespace Dimension_Data.Data
         public DimensionContext()
         {
         }
-
-        public DimensionContext(DbContextOptions<DimensionContext> options)
+        private readonly UserManager<IdentityUser> _userManager;
+        public DimensionContext(DbContextOptions<DimensionContext> options, UserManager<IdentityUser> userManager)
             : base(options)
         {
+            
         }
 
         public virtual DbSet<AspNetRoleClaims> AspNetRoleClaims { get; set; }
@@ -29,8 +35,12 @@ namespace Dimension_Data.Data
         {
             if (!optionsBuilder.IsConfigured)
             {
-                #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Initial Catalog=Dimension;Data Source=(LocalDB)\\MSSQLLocalDB;Trusted_Connection=True");
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+
+                SqlConnection connection = new SqlConnection("Initial Catalog=Dimension;Data Source=(LocalDB)\\MSSQLLocalDB;Trusted_Connection=True");
+            
+                optionsBuilder.UseSqlServer(connection);
+                base.OnConfiguring(optionsBuilder);
             }
         }
 
@@ -189,6 +199,7 @@ namespace Dimension_Data.Data
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.EmployeeData)
                     .HasForeignKey(d => d.UserID)
+                    .OnDelete(DeleteBehavior.SetNull)
                     .HasConstraintName("FK_EmployeeData_AspNetUsers");
             });
 

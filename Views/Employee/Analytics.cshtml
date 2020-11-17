@@ -1,0 +1,97 @@
+﻿@model IEnumerable<Dimension_Data.Models.EmployeeData>
+@{
+    Layout = "empNav";
+}
+<div class="row">
+    <div class="col-md-4">
+
+      
+        <div class="card shadow">
+            <div class="card-header bg-light">
+                <h4>Total Employees </h4>
+            </div>
+            <div class="card-body text-center text-dark">
+                <span class="card-title"><i class="fa fa-users fa-3x" aria-hidden="true"></i></span>
+                <h3 class="card-text pt-2">@ViewBag.count</h3>
+            </div>
+            <h5 class="text-center">Employees per gender</h5>
+            <canvas id="myChart"> </canvas>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card shadow">
+            <div class="card-header bg-light">
+                <h4>Number of departments </h4>
+            </div>
+            <div class="card-body text-center text-dark">
+                <span class="card-title"><i class="fa fa-building fa-3x" aria-hidden="true"></i></span>
+                <h3 class="card-text pt-2">@ViewBag.depart</h3>
+            </div>
+            <h5 class="text-center">Employees per department</h5>
+            <canvas id="barChart"> </canvas>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card shadow" >
+            <div class="card-header bg-light">
+                <h4>Marital Status </h4>
+              
+            </div>
+            <div class="card-body text-center text-dark ">
+                <span class="card-title"><i class="fa fa-heart fa-3x" aria-hidden="true"></i></span>
+                <h3 class="card-text pt-2">X</h3>
+            </div>
+            <h5 class="text-center">Employees per marital status</h5>
+            <canvas id="vChart"> </canvas>
+        </div>
+    </div>
+    
+</div>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<script type="text/javascript">
+
+
+    let ctx = "myChart";
+    let pieChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: ['Male', 'Female'],
+            datasets: [{
+
+                data: [@ViewBag.male, @ViewBag.female],
+                backgroundColor: ['#16697a','#e6739f']
+            }]
+        },
+
+
+    });
+
+    let ctix = 'barChart';
+    let barChart = new Chart(ctix, {
+        type: 'pie',
+        data: {
+            labels: ["Sales", "Research & Dev", "HR"],
+            datasets: [{
+               label: "Employees",
+                data: [@ViewBag.sales, @ViewBag.rd, @ViewBag.hr],
+                backgroundColor: ["#f05454", "#30475e", '#556052']
+            }]
+        }
+    });
+
+    let msts = 'vChart';
+    let vChart = new Chart(msts, {
+        type: 'pie',
+        data: {
+            labels: ["Married", "Single", "Divorced"],
+            datasets: [{
+               label: "Employees",
+                data: [@ViewBag.married, @ViewBag.divorce, @ViewBag.single],
+                backgroundColor: ["#8f384d", "#5c6e91", '#dd9866']
+            }]
+        }
+    });
+</script>

@@ -30,6 +30,14 @@ namespace Dimension_Data.Controllers
             ViewBag.rd = (from rd in _context.EmployeeData where rd.Department == "Research & Development" select rd).Count();
             ViewBag.male = (from male in _context.EmployeeData where male.Gender == "Male" select male).Count();
             ViewBag.female = (from female in _context.EmployeeData where female.Gender == "Female" select female).Count();
+            ViewBag.married = (from marital in _context.EmployeeData where marital.MaritalStatus == "Married" select marital).Count();
+            ViewBag.single = (from marital in _context.EmployeeData where marital.MaritalStatus == "Single" select marital).Count();
+            ViewBag.divorce = (from marital in _context.EmployeeData where marital.MaritalStatus == "Divorced" select marital).Count();
+        }
+        public IActionResult Analytics()
+        {
+            viewData();
+            return View();
         }
 
         // GET: Employee
@@ -38,7 +46,7 @@ namespace Dimension_Data.Controllers
         {
 
             viewData();
-            String query = "Select TOP(5) * FROM EmployeeData ORDER BY EmployeeNumber DESC";
+            String query = "Select TOP(10) * FROM EmployeeData ORDER BY EmployeeNumber DESC";
 
             return View(await _context.EmployeeData.FromSqlRaw(query).ToListAsync());
         }

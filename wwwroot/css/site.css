@@ -8,6 +8,13 @@ body {
   
  
 }
+.nav-tab{
+    height :100%;
+    top:0;
+    left:0;
+    width: 18%;
+    position: fixed;
+}
 a.navbar-brand {
   white-space: normal;
   text-align: center;
