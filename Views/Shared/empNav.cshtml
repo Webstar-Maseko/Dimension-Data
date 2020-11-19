@@ -25,34 +25,35 @@
     <div class="row">
         <div class="col-2">
 
-            <nav class="navbar-dark bg-dark nav-tab pl-3" id="#nav">
-                <ul class="nav navbar-nav">
+            <nav class="navbar-dark bg-dark nav-tab pl-3" >
+                <ul class="nav navbar-nav" id="#nav">
                     <li class="nav-item">
                         <a class="navbar-brand pb-5 pt-3" href="#"><h4>Dimension Data</h4></a>
 
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-controller="Employee" asp-action="Index">Dashboard</a>
+                    <li class="nav-item pb-2">
+                        <a class="nav-link" asp-controller="Employee" asp-action="Index"><i class="fa fa-paper-plane-o fa-2x pr-2" aria-hidden="true"></i>Dashboard</a>
+                    </li>
+                    <li class="nav-item pb-2">
+                        <a class="nav-link" asp-controller="ToDoes" asp-action="Index"><i class="fa fa-calendar-o  fa-2x pr-2" aria-hidden="true"></i>To Do</a>
                     </li>
                     @if (User.IsInRole("Manager"))
                     {
-                        <li class="nav-item">
-                            <a class="nav-link"  asp-controller="Employee" asp-action="Employees">Employees</a>
+                        <li class="nav-item pb-2">
+                            <a class="nav-link" asp-controller="Employee" asp-action="Employees"><i class="fa fa-users fa-2x pr-2" aria-hidden="true"></i>Employees</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Employee" asp-action="Create">Add Employee</a>
+                        <li class="nav-item pb-2">
+                            <a class="nav-link" asp-controller="Employee" asp-action="Create"><i class="fa fa-plus fa-2x pr-2" aria-hidden="true"></i>Add Employee</a>
                         </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link " asp-controller="Employee" asp-action="Analytics">Analytics</a>
+                        <li class="nav-item pb-2">
+                            <a class="nav-link " asp-controller="Employee" asp-action="Analytics"><i class="fa fa-line-chart fa-2x pr-2" aria-hidden="true"></i>Analytics</a>
                         </li>
 
                     }
-                    <li class="nav-item">
-                        <a class="nav-link" asp-controller="ToDoes" asp-action="Index">To Do</a>
-                    </li>
-                    <li class="nav-item">
-                        <a asp-area="Identity" asp-page="/Account/Manage/Index" class="nav-link">Profile</a>
+
+                    <li class="nav-item pb-2">
+                        <a asp-area="Identity" asp-page="/Account/Manage/Index" class="nav-link"><i class="fa fa-user fa-2x pr-2"></i>Profile</a>
                     </li>
                 </ul>
 

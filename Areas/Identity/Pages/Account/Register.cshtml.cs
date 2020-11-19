@@ -52,8 +52,6 @@ namespace Dimension_Data.Areas.Identity.Pages.Account
 
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
-      
-
         public class InputModel
         {
             [Display(Name ="Role")]
@@ -92,13 +90,18 @@ namespace Dimension_Data.Areas.Identity.Pages.Account
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
+        public async Task reg()
+        {
+
+        }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl = returnUrl ?? Url.Content("~/");
             var role = _roleManager.FindByNameAsync(Input.Name).Result;
             var userExist = (from emp in _context.EmployeeData where emp.EmployeeNumber == Input.empNum select emp).FirstOrDefault();
-       
+            var isManager = (from emp in _context.EmployeeData where emp.EmployeeNumber == Input.empNum select emp.JobRole).FirstOrDefault();
+
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
@@ -106,40 +109,89 @@ namespace Dimension_Data.Areas.Identity.Pages.Account
                 {
                     if((_context.EmployeeData.FromSqlRaw($"Select userID FROM EmployeeData where EmployeeNumber = {Input.empNum} AND userID IS NULL")) != null)
                     {
-                        var user = new IdentityUser { UserName = Input.Email, Email = Input.Email, PhoneNumber = Input.PhoneNumber };
-                        var result = await _userManager.CreateAsync(user, Input.Password);
-                        if (result.Succeeded)
+                        if(Input.Name == "Manager")
                         {
-
-                            _logger.LogInformation("User created a new account with password.");
-                            await _userManager.AddToRoleAsync(user, role.Name);
-                           
-
-                            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                            var callbackUrl = Url.Page(
-                                "/Account/ConfirmEmail",
-                                pageHandler: null,
-                                values: new { area = "Identity", userId = user.Id, code = code, empNum = Input.empNum, returnUrl = returnUrl },
-                                protocol: Request.Scheme);
-
-                            await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                                $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-
-                            if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                            if(isManager == Input.Name)
                             {
-                                return RedirectToPage("RegisterConfirmation", new { email = Input.Email, empNum = Input.empNum, returnUrl = returnUrl });
+                                var user = new IdentityUser { UserName = Input.Email, Email = Input.Email, PhoneNumber = Input.PhoneNumber };
+                                var result = await _userManager.CreateAsync(user, Input.Password);
+                                if (result.Succeeded)
+                                {
+
+                                    _logger.LogInformation("User created a new account with password.");
+                                    await _userManager.AddToRoleAsync(user, role.Name);
+
+
+                                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                                    var callbackUrl = Url.Page(
+                                        "/Account/ConfirmEmail",
+                                        pageHandler: null,
+                                        values: new { area = "Identity", userId = user.Id, code = code, empNum = Input.empNum, returnUrl = returnUrl },
+                                        protocol: Request.Scheme);
+
+                                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+                                    if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                                    {
+                                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, empNum = Input.empNum, returnUrl = returnUrl });
+                                    }
+                                    else
+                                    {
+                                        await _signInManager.SignInAsync(user, isPersistent: false);
+                                        return LocalRedirect(returnUrl);
+                                    }
+                                }
+                                foreach (var error in result.Errors)
+                                {
+                                    ModelState.AddModelError(string.Empty, error.Description);
+                                }
                             }
                             else
                             {
-                                await _signInManager.SignInAsync(user, isPersistent: false);
-                                return LocalRedirect(returnUrl);
+                                ModelState.AddModelError(string.Empty, "Employee number not associated with a manager, please register as an employee if you are not a manager");
                             }
                         }
-                        foreach (var error in result.Errors)
+                        else
                         {
-                            ModelState.AddModelError(string.Empty, error.Description);
+
+                            var user = new IdentityUser { UserName = Input.Email, Email = Input.Email, PhoneNumber = Input.PhoneNumber };
+                            var result = await _userManager.CreateAsync(user, Input.Password);
+                            if (result.Succeeded)
+                            {
+
+                                _logger.LogInformation("User created a new account with password.");
+                                await _userManager.AddToRoleAsync(user, role.Name);
+
+
+                                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                                code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                                var callbackUrl = Url.Page(
+                                    "/Account/ConfirmEmail",
+                                    pageHandler: null,
+                                    values: new { area = "Identity", userId = user.Id, code = code, empNum = Input.empNum, returnUrl = returnUrl },
+                                    protocol: Request.Scheme);
+
+                                await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                                    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+                                if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                                {
+                                    return RedirectToPage("RegisterConfirmation", new { email = Input.Email, empNum = Input.empNum, returnUrl = returnUrl });
+                                }
+                                else
+                                {
+                                    await _signInManager.SignInAsync(user, isPersistent: false);
+                                    return LocalRedirect(returnUrl);
+                                }
+                            }
+                            foreach (var error in result.Errors)
+                            {
+                                ModelState.AddModelError(string.Empty, error.Description);
+                            }
                         }
+
                     }
                     else
                     {

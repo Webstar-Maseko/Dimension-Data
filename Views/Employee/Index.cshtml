@@ -88,6 +88,23 @@
 <div id="calendar" class="container shadow pb-5">
 
 </div>
+<div id="mode" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"><span id="eTitle"></span></h4>
+            </div>
+            <div class="modal-body">
+                <p id="disc"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
 
 
 
@@ -101,11 +118,15 @@
             url: '/Employee/Events',
             success: function (data) {
                 $.each(data, function (i, a) {
+                   
                     event.push({
                         title: a.title,
-                        message: a.message,
+                        description: a.message,
                         start: a.startDate,
-                        end: a.finishDate
+                        end: a.finishDate,
+                        startTime: a.startTime,
+                        endTime : a.finishTime,
+                        color: a.color
                     });
 
                 })
@@ -120,7 +141,6 @@
         function createCalendar(event) {
             let calendarEl = document.getElementById('calendar');
             let calendar = new FullCalendar.Calendar(calendarEl, {
-                timeFormat : 'h(:mm)a',
                 headerToolbar: {
                     left: "",
                     center: 'title'
@@ -129,7 +149,21 @@
                 eventLimit : true,
                 contentHeight: 400,
                 events: event,
-                eventColor: 'red'
+                eventColor: 'red',
+                eventClick: function (i) {
+
+                    document.getElementById('eTitle').innerText = i.event.title;
+                    let $discr = $('<div/>');
+                    $discr.append($('<p/>').html('<b>Start: </b>' + i.event.start));
+                    if (i.event.end != null) {
+                        $discr.append($('<p/>').html('<b>End: </b>' + i.event.end));
+                    }
+                    $discr.append($('<p/>').html('<b>Message: </b>' + i.event.description));
+                    $("#disc").empty().html($discr);
+                    $("#mode").modal();
+
+
+                }
                
             });
 
