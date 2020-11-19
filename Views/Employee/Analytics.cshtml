@@ -1,13 +1,15 @@
 ﻿@model IEnumerable<Dimension_Data.Models.EmployeeData>
 @{
+    ViewData["Title"] = "Data Analytics";
     Layout = "empNav";
 }
+<h1 class="pb-5">@ViewData["Title"]</h1>
 <div class="row">
     <div class="col-md-4">
 
       
         <div class="card shadow">
-            <div class="card-header bg-light">
+            <div class="card-header bg-secondary">
                 <h4>Total Employees </h4>
             </div>
             <div class="card-body text-center text-dark">
@@ -20,7 +22,7 @@
     </div>
     <div class="col-md-4">
         <div class="card shadow">
-            <div class="card-header bg-light">
+            <div class="card-header bg-secondary">
                 <h4>Number of departments </h4>
             </div>
             <div class="card-body text-center text-dark">
@@ -33,7 +35,7 @@
     </div>
     <div class="col-md-4">
         <div class="card shadow" >
-            <div class="card-header bg-light">
+            <div class="card-header bg-secondary">
                 <h4>Marital Status </h4>
               
             </div>
@@ -47,6 +49,15 @@
     </div>
     
 </div>
+<div class="row pt-5 pb-5">
+    <div class="col-md-6">
+        <canvas  id="ageChart"></canvas>
+    </div>
+    <div class="col-md-6">
+        <canvas id="jobRole" ></canvas>
+    </div>
+</div>
+
 
 
 
@@ -94,4 +105,32 @@
             }]
         }
     });
+
+    let ageGroup = 'ageChart';
+    let ageChart = new Chart(ageGroup, {
+        type: 'bar',
+        data: {
+            labels: ["< 21", "22 - 31", "32 - 40", "41 - 50", ">51"],
+            datasets: [{
+                label: "Employees by age group",
+                data: [@ViewBag.below21, @ViewBag.below31,@ViewBag.below41,@ViewBag.below51,@ViewBag.above51],
+                backgroundColor: ["#202040", "#543864", "#ff6363", "#fdcb9e","#34495e" ]
+            }]
+        }
+    });
+
+    let jobRole = 'jobRole'
+    let jobChart = new Chart(jobRole, {
+
+        type: 'horizontalBar',
+        data: {
+            labels: ["Sales Representative", "Managers", "Healthcare Representative", "Laboratory Technician", "Sales Executive", "Manufacturing Director", "Human Resources", "Research Director", "Research Scientist"],
+            datasets: [{
+                label: "Employees by their roles",
+                data: [@ViewBag.saleRep,@ViewBag.manager,@ViewBag.health,@ViewBag.lab,@ViewBag.saleEx,@ViewBag.manufa,@ViewBag.humanR,@ViewBag.researchD,@ViewBag.researchS],
+                backgroundColor: ["#4e89ae", "#43658b", "#1d2d50", "#1e5f74", "#133b5c", "#ed6663", "#ffa372", "#c3aed6", "#5d54a4"]
+            }]
+        }
+    });
+
 </script>

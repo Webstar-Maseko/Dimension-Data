@@ -2,11 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Dimension_Data.Models;
-using Microsoft.AspNetCore.Connections;
-using Microsoft.Data.SqlClient;
-using System.Data;
-using Microsoft.AspNetCore.Identity;
-using System.Linq;
 
 namespace Dimension_Data.Data
 {
@@ -15,11 +10,10 @@ namespace Dimension_Data.Data
         public DimensionContext()
         {
         }
-        private readonly UserManager<IdentityUser> _userManager;
-        public DimensionContext(DbContextOptions<DimensionContext> options, UserManager<IdentityUser> userManager)
+
+        public DimensionContext(DbContextOptions<DimensionContext> options)
             : base(options)
         {
-            
         }
 
         public virtual DbSet<AspNetRoleClaims> AspNetRoleClaims { get; set; }
@@ -30,17 +24,14 @@ namespace Dimension_Data.Data
         public virtual DbSet<AspNetUserTokens> AspNetUserTokens { get; set; }
         public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
         public virtual DbSet<EmployeeData> EmployeeData { get; set; }
+        public virtual DbSet<ToDo> ToDo { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-
-                SqlConnection connection = new SqlConnection("Initial Catalog=Dimension;Data Source=(LocalDB)\\MSSQLLocalDB;Trusted_Connection=True");
-            
-                optionsBuilder.UseSqlServer(connection);
-                base.OnConfiguring(optionsBuilder);
+                optionsBuilder.UseSqlServer("Initial Catalog=Dimension;Data Source=(LocalDB)\\MSSQLLocalDB;Trusted_Connection=True");
             }
         }
 
@@ -178,10 +169,6 @@ namespace Dimension_Data.Data
                     .IsRequired()
                     .HasMaxLength(10);
 
-                entity.Property(e => e.MonthlyIncome).HasColumnType("money");
-
-                entity.Property(e => e.MonthlyRate).HasColumnType("money");
-
                 entity.Property(e => e.Over18)
                     .IsRequired()
                     .HasMaxLength(1)
@@ -192,15 +179,55 @@ namespace Dimension_Data.Data
                     .IsRequired()
                     .HasMaxLength(3);
 
-                entity.Property(e => e.UserID)
+                entity.Property(e => e.UserId)
                     .HasColumnName("UserID")
                     .HasMaxLength(450);
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.EmployeeData)
-                    .HasForeignKey(d => d.UserID)
+                    .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.SetNull)
                     .HasConstraintName("FK_EmployeeData_AspNetUsers");
+            });
+
+            modelBuilder.Entity<ToDo>(entity =>
+            {
+                entity.ToTable("toDo");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.Color)
+                    .HasColumnName("color")
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.FinishDate)
+                    .HasColumnName("finishDate")
+                    .HasColumnType("date");
+
+                entity.Property(e => e.FinishTime).HasColumnName("finishTime");
+
+                entity.Property(e => e.Message).HasColumnName("message");
+
+                entity.Property(e => e.StartDate)
+                    .HasColumnName("startDate")
+                    .HasColumnType("date");
+
+                entity.Property(e => e.StartTime).HasColumnName("startTime");
+
+                entity.Property(e => e.Title)
+                    .HasColumnName("title")
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.UserId)
+                    .IsRequired()
+                    .HasColumnName("userId")
+                    .HasMaxLength(450);
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.ToDo)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_toDo_toDo");
             });
 
             OnModelCreatingPartial(modelBuilder);

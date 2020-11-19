@@ -44,7 +44,7 @@ namespace Dimension_Data
                     builder => builder.RequireRole("Admin", "Manager", "Employee"));
                 options.AddPolicy("writepolicy",
                     builder => builder.RequireRole("Admin", "Manager"));
-                
+               
             });
             services.AddTransient<IEmailSender,EmailSender>();
             services.Configure<AuthMessageSenderOpt>(Configuration);

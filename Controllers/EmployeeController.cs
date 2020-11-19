@@ -7,17 +7,43 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 
 namespace Dimension_Data.Controllers
 {
     public class EmployeeController : Controller
     {
         private readonly DimensionContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
 
-        public EmployeeController(DimensionContext context)
+        public EmployeeController(DimensionContext context, UserManager<IdentityUser> userManager , SignInManager<IdentityUser> signInManager)
         {
             _context = context;
+            _signInManager = signInManager;
+            _userManager = userManager;
         }
+        public void empAge()
+        {
+            ViewBag.below21 = (from age in _context.EmployeeData where age.Age >=16 && age.Age <=20  select age).Count();
+            ViewBag.below31 = (from age in _context.EmployeeData where age.Age >= 21 && age.Age <= 30 select age).Count();
+            ViewBag.below41 = (from age in _context.EmployeeData where age.Age >= 31 && age.Age <= 40 select age).Count();
+            ViewBag.below51 = (from age in _context.EmployeeData where age.Age >= 41 && age.Age <= 50 select age).Count();
+            ViewBag.above51 = (from age in _context.EmployeeData where age.Age >= 51 select age).Count();
+        }
+        public void employRole()
+        {
+            ViewBag.saleEx = (from role in _context.EmployeeData where role.JobRole == "Sales Executive" select role).Count();
+            ViewBag.saleRep = (from role in _context.EmployeeData where role.JobRole == "Sales Representative" select role).Count();
+            ViewBag.manager = (from role in _context.EmployeeData where role.JobRole == "Manager" select role).Count();
+            ViewBag.health = (from role in _context.EmployeeData where role.JobRole == "Healthcare Representative" select role).Count();
+            ViewBag.lab = (from role in _context.EmployeeData where role.JobRole == "Laboratory Technician" select role).Count();
+            ViewBag.manufa = (from role in _context.EmployeeData where role.JobRole == "Manufacturing Director" select role).Count();
+            ViewBag.humanR = (from role in _context.EmployeeData where role.JobRole == "Human Resources" select role).Count();
+            ViewBag.researchD = (from role in _context.EmployeeData where role.JobRole == "Research Director" select role).Count();
+            ViewBag.researchS = (from role in _context.EmployeeData where role.JobRole == "Research Scientist" select role).Count();
+        }
+
         public void viewData()
         {
             ViewBag.depart = (from depar in _context.EmployeeData select depar.Department).Distinct().Count();
@@ -34,10 +60,20 @@ namespace Dimension_Data.Controllers
             ViewBag.single = (from marital in _context.EmployeeData where marital.MaritalStatus == "Single" select marital).Count();
             ViewBag.divorce = (from marital in _context.EmployeeData where marital.MaritalStatus == "Divorced" select marital).Count();
         }
+        [Authorize(Policy = "writepolicy")]
         public IActionResult Analytics()
         {
+            empAge();
             viewData();
+            employRole();
             return View();
+        }
+        [Authorize(Policy = "writepolicy")]
+        public async Task<IActionResult> Employees()
+        {
+            viewData();
+            String query = "Select TOP(10) * FROM EmployeeData ORDER BY EmployeeNumber DESC";
+            return View(await _context.EmployeeData.FromSqlRaw(query).ToListAsync());
         }
 
         // GET: Employee
@@ -45,10 +81,13 @@ namespace Dimension_Data.Controllers
         public async Task<IActionResult> Index()
         {
 
-            viewData();
-            String query = "Select TOP(10) * FROM EmployeeData ORDER BY EmployeeNumber DESC";
-
+            String query = $"Select * FROM EmployeeData where UserID= '{_userManager.GetUserId(User)}'";
             return View(await _context.EmployeeData.FromSqlRaw(query).ToListAsync());
+        }
+        public async Task<IActionResult> Events()
+        {
+            var events = await (from user in _context.ToDo where user.UserId == _userManager.GetUserId(User) select user).ToListAsync();
+            return Json(events);
         }
 
         //GET: Employee by empNumber

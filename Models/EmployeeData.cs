@@ -40,10 +40,10 @@ namespace Dimension_Data.Models
         [Display(Name = "Monthly income")]
         [DataType(DataType.Currency)]
 
-        public decimal MonthlyIncome { get; set; }
+        public int MonthlyIncome { get; set; }
         [Display(Name = "Monthly rate")]
         [DataType(DataType.Currency)]
-        public decimal MonthlyRate { get; set; }
+        public int MonthlyRate { get; set; }
         [Display(Name = "Number of companies worked for")]
         public int NumCompaniesWorked { get; set; }
         [Display(Name = "Over 18")]
@@ -75,7 +75,7 @@ namespace Dimension_Data.Models
         [Display(Name = "Years with current manager")]
 
         public int YearsWithCurrManager { get; set; }
-        public string UserID { get; set; }
+        public string UserId { get; set; }
 
         public virtual AspNetUsers User { get; set; }
     }

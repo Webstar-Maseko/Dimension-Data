@@ -12,6 +12,7 @@ namespace Dimension_Data.Models
             AspNetUserRoles = new HashSet<AspNetUserRoles>();
             AspNetUserTokens = new HashSet<AspNetUserTokens>();
             EmployeeData = new HashSet<EmployeeData>();
+            ToDo = new HashSet<ToDo>();
         }
 
         public string Id { get; set; }
@@ -35,5 +36,6 @@ namespace Dimension_Data.Models
         public virtual ICollection<AspNetUserRoles> AspNetUserRoles { get; set; }
         public virtual ICollection<AspNetUserTokens> AspNetUserTokens { get; set; }
         public virtual ICollection<EmployeeData> EmployeeData { get; set; }
+        public virtual ICollection<ToDo> ToDo { get; set; }
     }
 }

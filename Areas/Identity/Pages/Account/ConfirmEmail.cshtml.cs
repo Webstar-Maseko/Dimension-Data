@@ -45,7 +45,7 @@ namespace Dimension_Data.Areas.Identity.Pages.Account
             var result = await _userManager.ConfirmEmailAsync(user, code);
 
             EmployeeData userID = (from userReg in _context.EmployeeData where userReg.EmployeeNumber == empNum select userReg).SingleOrDefault();
-            userID.UserID =userId;
+            userID.UserId =userId;
             _context.SaveChanges();
 
             StatusMessage = result.Succeeded ? "Thank you for confirming your email." : "Error confirming your email.";
