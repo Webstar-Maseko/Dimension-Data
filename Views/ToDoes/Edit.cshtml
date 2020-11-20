@@ -9,7 +9,8 @@
 
 <h4>ToDo</h4>
 <hr />
-<div class="row">
+<div class="row pb-5">
+    <div class="col-md-4"></div>
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -21,7 +22,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Message" class="control-label"></label>
-                <input asp-for="Message" class="form-control" />
+                <textarea asp-for="Message" class="form-control"> </textarea>
                 <span asp-validation-for="Message" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -31,22 +32,13 @@
             </div>
             <div class="form-group">
                 <label asp-for="FinishDate" class="control-label"></label>
-                <input asp-for="FinishDate"type="date" class="form-control" />
+                <input asp-for="FinishDate" type="date" class="form-control" />
                 <span asp-validation-for="FinishDate" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="StartTime" class="control-label"></label>
-                <input asp-for="StartTime" type="time" class="form-control" />
-                <span asp-validation-for="StartTime" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="FinishTime" class="control-label"></label>
-                <input asp-for="FinishTime" type="time" class="form-control" />
-                <span asp-validation-for="FinishTime" class="text-danger"></span>
-            </div>
+
             <div class="form-group">
                 <label asp-for="UserId" class="control-label d-none"></label>
-                <input asp-for="UserId" class="form-control d-none" value="@ViewBag.UserId"/>
+                <input asp-for="UserId" class="form-control d-none" value="@ViewBag.UserId" />
                 <span asp-validation-for="UserId" class="text-danger d-none"></span>
             </div>
             <div class="form-group">
@@ -58,12 +50,14 @@
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
+        <div>
+            <a asp-action="Index">Back to List</a>
+        </div>
     </div>
+    <div class="col-md-4"></div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

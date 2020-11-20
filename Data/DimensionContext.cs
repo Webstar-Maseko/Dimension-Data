@@ -202,17 +202,13 @@ namespace Dimension_Data.Data
 
                 entity.Property(e => e.FinishDate)
                     .HasColumnName("finishDate")
-                    .HasColumnType("date");
-
-                entity.Property(e => e.FinishTime).HasColumnName("finishTime");
+                    .HasColumnType("datetime");
 
                 entity.Property(e => e.Message).HasColumnName("message");
 
                 entity.Property(e => e.StartDate)
                     .HasColumnName("startDate")
-                    .HasColumnType("date");
-
-                entity.Property(e => e.StartTime).HasColumnName("startTime");
+                    .HasColumnType("datetime");
 
                 entity.Property(e => e.Title)
                     .HasColumnName("title")
@@ -226,7 +222,6 @@ namespace Dimension_Data.Data
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.ToDo)
                     .HasForeignKey(d => d.UserId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_toDo_toDo");
             });
 

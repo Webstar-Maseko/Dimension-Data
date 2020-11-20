@@ -1,10 +1,10 @@
 ﻿@model Dimension_Data.Models.EmployeeData
 
 @{
+
     ViewData["Title"] = "Create";
+    Layout = "empNav";
 }
-
-
 
 
     <h1>Create</h1>
@@ -124,7 +124,11 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="MaritalStatus" class="control-label"></label>
-                    <input asp-for="MaritalStatus" class="form-control" />
+                    <select class="form-control" asp-for="MaritalStatus">
+                        <option value="Married">Married</option>
+                        <option value="Divorced">Divorced</option>
+                        <option value="Single">Single</option>
+                    </select>
                     <span asp-validation-for="MaritalStatus" class="text-danger"></span>
                 </div>
             </div>

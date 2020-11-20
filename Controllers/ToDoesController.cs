@@ -61,7 +61,7 @@ namespace Dimension_Data.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Message,StartDate,FinishDate,StartTime,FinishTime,UserId,Color")] ToDo toDo)
+        public async Task<IActionResult> Create([Bind("Id,Title,Message,StartDate,FinishDate,UserId,Color")] ToDo toDo)
         {
             if (ModelState.IsValid)
             {
@@ -95,7 +95,7 @@ namespace Dimension_Data.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Message,StartDate,FinishDate,StartTime,FinishTime,UserId,Color")] ToDo toDo)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Message,StartDate,FinishDate,UserId,Color")] ToDo toDo)
         {
             if (id != toDo.Id)
             {

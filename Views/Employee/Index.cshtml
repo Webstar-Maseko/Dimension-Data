@@ -92,8 +92,8 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title"><span id="eTitle"></span></h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
                 <p id="disc"></p>
@@ -105,7 +105,6 @@
         </div>
     </div>
 </div>
-
 
 
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.4.0/main.min.js"></script>
@@ -124,8 +123,7 @@
                         description: a.message,
                         start: a.startDate,
                         end: a.finishDate,
-                        startTime: a.startTime,
-                        endTime : a.finishTime,
+                        
                         color: a.color
                     });
 
@@ -158,7 +156,7 @@
                     if (i.event.end != null) {
                         $discr.append($('<p/>').html('<b>End: </b>' + i.event.end));
                     }
-                    $discr.append($('<p/>').html('<b>Message: </b>' + i.event.description));
+                    $discr.append($('<p/>').html('<b>Message: </b>' + i.event.extendedProps.description));
                     $("#disc").empty().html($discr);
                     $("#mode").modal();
 
