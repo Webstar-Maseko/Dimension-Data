@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Edit";
+    Layout = "empNav";
 }
 
 
@@ -210,6 +211,10 @@
                 <div class="form-group">
                     <label asp-for="YearsWithCurrManager" class="control-label"></label>
                     <input asp-for="YearsWithCurrManager" class="form-control" />
+                    <span asp-validation-for="YearsWithCurrManager" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input asp-for="UserId" disabled class="form-control d-none" />
                     <span asp-validation-for="YearsWithCurrManager" class="text-danger"></span>
                 </div>
 

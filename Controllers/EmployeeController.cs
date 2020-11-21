@@ -93,7 +93,7 @@ namespace Dimension_Data.Controllers
         //GET: Employee by empNumber
         [HttpPost]
         [Authorize(Policy = "readpolicy")]
-        public async Task<IActionResult> index(int id)
+        public async Task<IActionResult> Employees(int id)
         {
             viewData();
             String query = $"Select * from EmployeeData where EmployeeNumber = {id}";
@@ -169,7 +169,7 @@ namespace Dimension_Data.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Policy = "writepolicy")]
-        public async Task<IActionResult> Edit(int id, [Bind("Age,Attrition,BusinessTravel,DailyRate,Department,DistanceFromHome,Education,EducationField,EmployeeCount,EmployeeNumber,EnvironmentSatisfaction,Gender,HourlyRate,JobInvolvement,JobLevel,JobRole,JobSatisfaction,MaritalStatus,MonthlyIncome,MonthlyRate,NumCompaniesWorked,Over18,OverTime,PercentSalaryHike,PerformanceRating,RelationshipSatisfaction,StandardHours,StockOptionLevel,TotalWorkingYears,TrainingTimesLastYear,WorkLifeBalance,YearsAtCompany,YearsInCurrentRole,YearsSinceLastPromotion,YearsWithCurrManager")] EmployeeData employeeData)
+        public async Task<IActionResult> Edit(int id, [Bind("Age,Attrition,BusinessTravel,DailyRate,Department,DistanceFromHome,Education,EducationField,EmployeeCount,EmployeeNumber,EnvironmentSatisfaction,Gender,HourlyRate,JobInvolvement,JobLevel,JobRole,JobSatisfaction,MaritalStatus,MonthlyIncome,MonthlyRate,NumCompaniesWorked,Over18,OverTime,PercentSalaryHike,PerformanceRating,RelationshipSatisfaction,StandardHours,StockOptionLevel,TotalWorkingYears,TrainingTimesLastYear,WorkLifeBalance,YearsAtCompany,YearsInCurrentRole,YearsSinceLastPromotion,YearsWithCurrManager,UserId")] EmployeeData employeeData)
         {
             if (id != employeeData.EmployeeNumber)
             {
